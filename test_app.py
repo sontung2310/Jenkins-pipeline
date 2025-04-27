@@ -31,6 +31,7 @@ def test_register(client):
     })
     assert response.status_code == 201
     assert response.get_json()['message'] == 'User registered successfully'
+    print("Test register function successfully")
 
 def test_login_success(client):
     # First, register the user
@@ -45,6 +46,7 @@ def test_login_success(client):
     })
     assert response.status_code == 200
     assert response.get_json()['message'] == 'Login successful'
+    print("Test login function successfully")
 
 def test_login_fail(client):
     response = client.post('/login', json={
@@ -53,3 +55,4 @@ def test_login_fail(client):
     })
     assert response.status_code == 401
     assert response.get_json()['error'] == 'Invalid credentials'
+    print("Test login function failed successfully")
