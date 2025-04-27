@@ -1,7 +1,6 @@
 pipeline{
     agent any
     stages{
-        # Go to the project directory where the Dockerfile is located
         sh 'cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD'
 
         stage('Build'){
