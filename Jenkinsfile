@@ -1,28 +1,34 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        sh 'cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD'
 
-        stage('Build'){
-            steps{
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
                 sh 'docker build -t flask-auth-app:latest .'
             }
         }
-        stage('Test'){
-            steps{
-                echo 'pytest'
+
+        stage('Test') {
+            steps {
+                sh 'docker run --rm flask-auth-app:latest pytest'
             }
         }
-        
     }
-    post{
-        always{
+
+    post {
+        always {
             echo 'Pipeline execution completed.'
         }
-        success{
-            echo 'Pipeline successed!'
+        success {
+            echo 'Pipeline succeeded!'
         }
-        failure{
+        failure {
             echo 'Pipeline failed!'
         }
     }
