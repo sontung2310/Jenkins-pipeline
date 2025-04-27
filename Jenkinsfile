@@ -4,7 +4,6 @@ pipeline{
         sh 'cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD'
 
         stage('Build'){
-            # Build Docker image
             steps{
                 sh 'docker build -t flask-auth-app:latest .'
             }
