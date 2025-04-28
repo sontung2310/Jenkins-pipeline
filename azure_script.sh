@@ -5,7 +5,8 @@ RESOURCE_GROUP="FlaskAuthRG"
 ACR_NAME="flaskauthacr2"
 AKS_CLUSTER_NAME="flaskappcluster"
 APP_NAME="flaskapp"
-LOCAL_IMAGE_NAME="sit753_hd-flaskapp:latest"
+# LOCAL_IMAGE_NAME="sit753_hd-flaskapp:latest"
+LOCAL_IMAGE_NAME="hd_pipeline-flaskapp:latest"
 DOCKER_IMAGE="$ACR_NAME.azurecr.io/$APP_NAME:v1"
 
 # Create a resource group
