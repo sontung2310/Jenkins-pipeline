@@ -19,6 +19,58 @@ pipeline {
                 sh 'docker run --rm flask-auth-app:latest pytest'
             }
         }
+        stage('SonarCloud Analysis') {
+            environment {
+                SONAR_TOKEN = credentials('SONAR_TOKEN')
+            }
+            steps {
+                sh '''
+            # Go to your project root where sonar-project.properties is located
+            cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD
+            
+            # Download and extract SonarScanner CLI
+            curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006.zip
+            unzip -oq sonar-scanner.zip
+            
+            # Add scanner to PATH
+            export PATH=$PWD/sonar-scanner-5.0.1.3006/bin:$PATH
+            
+            # Run scanner using sonar-project.properties (no need to re-declare properties)
+            sonar-scanner -Dsonar.token=$SONAR_TOKEN
+            ''' 
+            }
+        }
+        stage('Snyk Test') {
+            environment {
+                SNYK_TOKEN = credentials('Snyk-api-token')
+                SNYK_CFG_ENABLE_FIX = 'true'
+            }
+            steps {
+                sh '''
+                pip install -r requirements.txt
+                npm install -g snyk
+                snyk auth $SNYK_TOKEN
+                # Run snyk test but don't exit on vulnerabilities
+                snyk test || echo "Snyk test found issues, continuing to fix..."
+    
+                # Try to auto-fix vulnerabilities
+                pip install --upgrade pip pip-review
+                # Upgrade all dependencies to the latest version that resolves vulnerabilities
+                pip-review --auto
+
+                # Re-install dependencies to ensure everything is correctly updated
+                pip install -r requirements.txt
+                
+                # Test again
+                snyk test
+                '''
+            }
+       }
+       stage('Deployment') {
+           steps{
+               sh '''docker compose up -d'''
+           }
+       }
     }
 
     post {

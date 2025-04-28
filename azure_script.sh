@@ -46,7 +46,7 @@ DOCKER_IMAGE="$ACR_NAME.azurecr.io/$APP_NAME:v1"
 
 
 #Get the AKS credentials
-az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME --overwrite-existing
 
 # # # Attach the ACR to the AKS cluster
 # az aks update --name $AKS_CLUSTER_NAME --resource-group $RESOURCE_GROUP --attach-acr $ACR_NAME
