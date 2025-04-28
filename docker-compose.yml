@@ -2,6 +2,7 @@ services:
   flaskapp:
     # image: flask-auth-app
     build: .
+    platform: linux/amd64
     ports:
       - "5001:5000"
     env_file:

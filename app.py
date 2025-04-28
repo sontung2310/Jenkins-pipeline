@@ -51,6 +51,10 @@ def login():
         return jsonify({'message': 'Login successful'}), 200
     return jsonify({'error': 'Invalid credentials'}), 401
 
+@app.route('/welcome', methods=['GET'])
+def welcome():
+    return "Welcome to the Flask App! This is the welcome page."
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
