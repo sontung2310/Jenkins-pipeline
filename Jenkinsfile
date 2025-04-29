@@ -9,14 +9,14 @@ pipeline {
         }
         stage('Build stage') {
             steps {
-                sh 'Build Docker image for Flask application'
+                echo 'Build Docker image for Flask application'
                 sh 'docker build -t flask-auth-app:latest .'
             }
         }
 
         stage('Test stage') {
             steps {
-                sh 'Run unit tests using pytest'
+                echo 'Run unit tests using pytest'
                 sh 'docker run --rm flask-auth-app:latest pytest'
             }
         }
@@ -26,7 +26,7 @@ pipeline {
                 SONAR_TOKEN = credentials('SONAR_TOKEN')
             }
             steps {
-                sh 'Code quality analysis using SonarCloud'
+                echo 'Code quality analysis using SonarCloud'
                 sh '''
             # Go to your project root where sonar-project.properties is located
             cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD
@@ -50,7 +50,7 @@ pipeline {
                 SNYK_CFG_ENABLE_FIX = 'true'
             }
             steps {
-                sh 'Automated security analysis on dependencies of the application using Snyk'
+                echo 'Automated security analysis on dependencies of the application using Snyk'
                 sh '''
                 pip install -r requirements.txt
                 npm install -g snyk
@@ -74,21 +74,21 @@ pipeline {
        
        stage('Deploy stage') {
            steps{
-                sh 'Deploy application using Docker Compose'
+                echo 'Deploy application using Docker Compose'
                 sh '''docker compose up -d'''
            }
        }
        
        stage('Release stage') {
            steps{
-                sh 'Release application using Azure Kubernetes Service'
+                echo 'Release application using Azure Kubernetes Service'
                 sh '''bash azure_script.sh'''
            }
        }
 
        stage('Monitoring and Alerting stage') {
            steps{
-                sh 'Monitor application using Azure Monitor'
+                echo 'Monitor application using Azure Monitor'
                 sh '''bash monitoring_script.sh'''
            }
        }
