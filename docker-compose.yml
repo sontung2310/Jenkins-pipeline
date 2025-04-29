@@ -1,6 +1,6 @@
 services:
   flaskapp:
-    # image: flask-auth-app
+    image: sit753_hd-flaskapp:latest
     build: .
     platform: linux/amd64
     ports:

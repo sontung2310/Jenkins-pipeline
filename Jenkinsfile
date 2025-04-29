@@ -89,7 +89,7 @@ pipeline {
        stage('Monitoring and Alerting stage') {
            steps{
                 echo 'Monitor application using Azure Monitor'
-                sh '''bash monitoring_script.sh'''
+                sh '''bash monitoring_alert.sh'''
            }
        }
     }

@@ -1,7 +1,7 @@
 organization=sontung2310
 projectKey=sontung2310_Jenkins-pipeline
 serverUrl=https://sonarcloud.io
-serverVersion=8.0.0.62711
+serverVersion=8.0.0.62767
 dashboardUrl=https://sonarcloud.io/dashboard?id=sontung2310_Jenkins-pipeline
-ceTaskId=AZZ8-m1uHLvqe5kzjXlH
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZZ8-m1uHLvqe5kzjXlH
+ceTaskId=AZaA2jJ91pxZPtWvZFxd
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZaA2jJ91pxZPtWvZFxd
