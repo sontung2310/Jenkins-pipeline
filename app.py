@@ -53,7 +53,7 @@ def login():
 
 @app.route('/welcome', methods=['GET'])
 def welcome():
-    return "Welcome to the Flask App! This is the welcome page."
+    return "Welcome to the SIT753 HD project! This is a simple Flask application with user registration and login functionality."
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
