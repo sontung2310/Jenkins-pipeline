@@ -56,3 +56,8 @@ def test_login_fail(client):
     assert response.status_code == 401
     assert response.get_json()['error'] == 'Invalid credentials'
     print("Test login function failed successfully")
+
+def test_welcome(client):
+    response = client.get('/welcome')
+    assert response.status_code == 200
+    assert b'Welcome to the SIT753 HD project!' in response.data
