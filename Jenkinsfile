@@ -7,23 +7,26 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/sontung2310/Jenkins-pipeline.git'
             }
         }
-
-        stage('Build') {
-            steps {
-                sh 'docker build -t flask-auth-app:latest .'
+        stage('Build stage') {
+                steps {
+                    sh 'Build Docker image for Flask application'
+                    sh 'docker build -t flask-auth-app:latest .'
+                }
             }
-        }
 
-        stage('Test') {
+        stage('Test stage') {
             steps {
+                sh 'Run unit tests using pytest'
                 sh 'docker run --rm flask-auth-app:latest pytest'
             }
         }
-        stage('SonarCloud Analysis') {
+        
+        stage('Code quality analysis stage') {
             environment {
                 SONAR_TOKEN = credentials('SONAR_TOKEN')
             }
             steps {
+                sh 'Code quality analysis using SonarCloud'
                 sh '''
             # Go to your project root where sonar-project.properties is located
             cd /Users/sontung/Desktop/3.Project/trimester_3/SIT753_HD
@@ -40,12 +43,14 @@ pipeline {
             ''' 
             }
         }
-        stage('Snyk Test') {
+        
+        stage('Security stage') {
             environment {
                 SNYK_TOKEN = credentials('Snyk-api-token')
                 SNYK_CFG_ENABLE_FIX = 'true'
             }
             steps {
+                sh 'Automated security analysis on dependencies of the application using Snyk'
                 sh '''
                 pip install -r requirements.txt
                 npm install -g snyk
@@ -66,9 +71,25 @@ pipeline {
                 '''
             }
        }
-       stage('Deployment') {
+       
+       stage('Deploy stage') {
            steps{
-               sh '''docker compose up -d'''
+                sh 'Deploy application using Docker Compose'
+                sh '''docker compose up -d'''
+           }
+       }
+       
+       stage('Release stage') {
+           steps{
+                sh 'Release application using Azure Kubernetes Service'
+                sh '''bash azure_script.sh'''
+           }
+       }
+
+       stage('Monitoring and Alerting stage') {
+           steps{
+                sh 'Monitor application using Azure Monitor'
+                sh '''bash monitoring_script.sh'''
            }
        }
     }

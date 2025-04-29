@@ -98,5 +98,7 @@ kubectl apply -f service.yaml
 # Watch the service to get the external IP
 echo "Waiting for external IP..."
 kubectl get service $APP_NAME-service
+sleep 20
+kubectl get service $APP_NAME-service
 
 
