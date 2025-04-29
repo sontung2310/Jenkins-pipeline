@@ -7,7 +7,7 @@ action_group_short_name="maa"
 email="buisontung2310@gmail.com"
 workspace_id="<your-workspace-id>"
 
-subscription_id=$(az group show --name <$resource_group> --query "id" -o tsv | cut -d'/' -f3)
+subscription_id=$(az group show --name $resource_group --query "id" -o tsv | cut -d'/' -f3)
 
 # Create the Action Group
 action_group_id=$(az monitor action-group create \
