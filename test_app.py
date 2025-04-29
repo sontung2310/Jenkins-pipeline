@@ -57,7 +57,24 @@ def test_login_fail(client):
     assert response.get_json()['error'] == 'Invalid credentials'
     print("Test login function failed successfully")
 
+def test_register_existing_user(client):
+    # First registration
+    client.post('/register', json={
+        'username': 'testuser',
+        'password': 'password123'
+    })
+
+    # Attempt to register again with the same username
+    response = client.post('/register', json={
+        'username': 'testuser',
+        'password': 'password123'
+    })
+
+    assert response.status_code == 409
+    assert response.json['error'] == 'Username already exists'
+    print("Test login function failed successfully")
+
 def test_welcome(client):
     response = client.get('/welcome')
     assert response.status_code == 200
-    assert b'Welcome to the SIT753 HD project!' in response.data
+    assert b'Welcome to the SIT753 HD project! This is a simple Flask application with user registration and login functionality.' in response.data
