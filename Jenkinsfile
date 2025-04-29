@@ -8,11 +8,11 @@ pipeline {
             }
         }
         stage('Build stage') {
-                steps {
-                    sh 'Build Docker image for Flask application'
-                    sh 'docker build -t flask-auth-app:latest .'
-                }
+            steps {
+                sh 'Build Docker image for Flask application'
+                sh 'docker build -t flask-auth-app:latest .'
             }
+        }
 
         stage('Test stage') {
             steps {
