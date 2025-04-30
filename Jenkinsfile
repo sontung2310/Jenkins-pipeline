@@ -25,7 +25,7 @@ pipeline {
         stage('Test stage') {
             steps {
                 echo 'Run unit tests using pytest'
-                sh 'docker run --rm flask-auth-app:latest pytest'
+                sh 'docker run --rm $IMAGE_NAME:latest pytest'
             }
         }
         

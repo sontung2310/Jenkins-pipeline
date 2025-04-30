@@ -1,5 +1,5 @@
 global:
-  licenseKey: 3d713c82130e95fbac830cb44c42d0ffFFFFNRAL
+  licenseKey: $NEW_RELIC_LICENSE_KEY
   cluster: flaskappcluster
 
 newrelic-prometheus-agent:
