@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: flaskapp
-        image: flaskauthacr2.azurecr.io/flaskapp:v1
+        image: flaskauthacr.azurecr.io/flaskapp:v1
         ports:
         - containerPort: 5000

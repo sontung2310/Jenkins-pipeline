@@ -2,7 +2,7 @@
 
 # VARIABLES - customize these
 RESOURCE_GROUP="FlaskAuthRG"
-ACR_NAME="flaskauthacr2"
+ACR_NAME="flaskauthacr"
 AKS_CLUSTER_NAME="flaskappcluster"
 APP_NAME="flaskapp"
 LOCAL_IMAGE_NAME="sit753_hd-flaskapp:latest"
@@ -11,7 +11,7 @@ DOCKER_IMAGE="$ACR_NAME.azurecr.io/$APP_NAME:v1"
 
 
 # Create a resource group
-az group create --name $RESOURCE_GROUP --location centralus
+az group create --name $RESOURCE_GROUP --location australiaeast
 
 # Create an Azure Container Registry
 az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic --admin-enabled true
@@ -19,10 +19,13 @@ az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic --ad
 # Log in to the Azure Container Registry
 az acr login --name $ACR_NAME
 
-# # Tag the local image
+# Tag the local image
 docker tag $LOCAL_IMAGE_NAME $DOCKER_IMAGE
 
-# # Push the image to the Azure Container Registry
+# # Delete the existing image in the ACR
+# az acr repository delete --name $ACR_NAME --repository $ACR_NAME --yes
+
+# Push the image to the Azure Container Registry
 docker push $DOCKER_IMAGE
 
 # Check whether the image is in the ACR
@@ -40,10 +43,6 @@ az aks create \
     --min-count 1 \
     --max-count 2 \
     --generate-ssh-keys
-
-
-# az provider register --namespace Microsoft.ContainerInstance
-az acr repository list --name $ACR_NAME --output table
 
 
 #Get the AKS credentials
@@ -99,7 +98,7 @@ kubectl apply -f service.yaml
 # Watch the service to get the external IP
 echo "Waiting for external IP..."
 kubectl get service $APP_NAME-service
-sleep 20
+sleep 10
 kubectl get service $APP_NAME-service
 
 

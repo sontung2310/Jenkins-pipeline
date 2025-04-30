@@ -8,6 +8,10 @@ email="buisontung2310@gmail.com"
 
 subscription_id=$(az group show --name $resource_group --query "id" -o tsv | cut -d'/' -f3)
 
+az aks enable-addons --addons monitoring \
+  --resource-group $resource_group \
+  --name $cluster_name
+
 # Create the Action Group
 action_group_id=$(az monitor action-group create \
   --resource-group $resource_group \
@@ -22,10 +26,6 @@ echo "Action Group ID: $action_group_id"
 az monitor action-group update \
   --ids $action_group_id \
   --add emailReceivers name='MyEmailReceiver' emailAddress="$email"
-  
-# az monitor metrics list-definitions \
-#   --resource "/subscriptions/$subscription_id/resourceGroups/$resource_group/providers/Microsoft.ContainerService/managedClusters/$cluster_name" \
-#   --output table
 
 az monitor metrics alert create \
   --name "AKSHighCPUAlert" \

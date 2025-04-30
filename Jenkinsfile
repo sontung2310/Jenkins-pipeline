@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'sit753_hd-flaskapp'
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
+        SNYK_TOKEN = credentials('Snyk-api-token')
+        TEST_ENV = 'test'
+        RELEASE_TAG = "release-${BUILD_NUMBER}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,7 +18,7 @@ pipeline {
         stage('Build stage') {
             steps {
                 echo 'Build Docker image for Flask application'
-                sh 'docker build -t flask-auth-app:latest .'
+                sh 'docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$RELEASE_TAG .'
             }
         }
 
@@ -22,9 +30,6 @@ pipeline {
         }
         
         stage('Code quality analysis stage') {
-            environment {
-                SONAR_TOKEN = credentials('SONAR_TOKEN')
-            }
             steps {
                 echo 'Code quality analysis using SonarCloud'
                 sh '''
@@ -45,10 +50,6 @@ pipeline {
         }
         
         stage('Security stage') {
-            environment {
-                SNYK_TOKEN = credentials('Snyk-api-token')
-                SNYK_CFG_ENABLE_FIX = 'true'
-            }
             steps {
                 echo 'Automated security analysis on dependencies of the application using Snyk'
                 sh '''
@@ -56,12 +57,12 @@ pipeline {
                 npm install -g snyk
                 snyk auth $SNYK_TOKEN
                 # Run snyk test but don't exit on vulnerabilities
-                snyk test || echo "Snyk test found issues, continuing to fix..."
+                snyk test || true
     
                 # Try to auto-fix vulnerabilities
                 pip install --upgrade pip pip-review
                 # Upgrade all dependencies to the latest version that resolves vulnerabilities
-                pip-review --auto
+                pip-review --auto || true
 
                 # Re-install dependencies to ensure everything is correctly updated
                 pip install -r requirements.txt
@@ -82,14 +83,15 @@ pipeline {
        stage('Release stage') {
            steps{
                 echo 'Release application using Azure Kubernetes Service'
-                sh '''bash azure_script.sh'''
+                sh '''bash script/azure_script.sh'''
            }
        }
 
        stage('Monitoring and Alerting stage') {
            steps{
-                echo 'Monitor application using Azure Monitor'
-                sh '''bash monitoring_alert.sh'''
+                echo 'Monitor application using Azure Monitor and New Relic'
+                sh '''bash script/monitoring_alert.sh'''
+                sh '''bash script/newrelic_monitoring.sh'''
            }
        }
     }
