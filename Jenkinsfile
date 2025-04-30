@@ -93,6 +93,7 @@ pipeline {
            steps{
                 echo 'Monitor application using Azure Monitor and New Relic'
                 sh '''bash script/monitoring_alert.sh'''
+                export NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
                 sh '''bash script/newrelic_monitoring.sh'''
            }
        }
