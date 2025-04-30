@@ -8,9 +8,6 @@ email="buisontung2310@gmail.com"
 
 subscription_id=$(az group show --name $resource_group --query "id" -o tsv | cut -d'/' -f3)
 
-az aks enable-addons --addons monitoring \
-  --resource-group $resource_group \
-  --name $cluster_name
 
 # Create the Action Group
 action_group_id=$(az monitor action-group create \
