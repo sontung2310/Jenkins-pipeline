@@ -7,6 +7,8 @@ pipeline {
         SNYK_TOKEN = credentials('Snyk-api-token')
         TEST_ENV = 'test'
         RELEASE_TAG = "release-${BUILD_NUMBER}"
+        NEW_RELIC_LICENSE_KEY = credentials('NEW_RELIC_LICENSE_KEY')
+
     }
 
     stages {
